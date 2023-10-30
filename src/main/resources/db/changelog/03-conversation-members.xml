@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+
+    <changeSet id="create_conversation_members_table1" author="Kishore">
+        <createTable tableName="conversation_members">
+            <column name="conversation_member_id" type="int" autoIncrement="true" startWith="200" incrementBy="1">
+                <constraints primaryKey="true"></constraints>
+            </column>
+            <column name="conversation_id" type="int">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"></constraints>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="conversation_members" baseColumnNames="conversation_id" constraintName="conversation_members_conversation_id" referencedTableName="conversations"
+                                 referencedColumnNames="conversation_id" onDelete="CASCADE"></addForeignKeyConstraint>
+
+        <addForeignKeyConstraint baseTableName="conversation_members" baseColumnNames="user_id" constraintName="conversation_members_user_id" referencedTableName="users"
+                                 referencedColumnNames="user_id" onDelete="CASCADE"></addForeignKeyConstraint>
+        <rollback>
+            <dropTable tableName="conversation_members"></dropTable>
+        </rollback>
+
+    </changeSet>
+
+
+
+
+
+
+
+
+
+
+
+
+</databaseChangeLog>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+
+    <changeSet id="create_messages_table" author="Kishore">
+        <createTable tableName="messages">
+            <column name="message_id" type="int" autoIncrement="true" startWith="300" incrementBy="1">
+                <constraints primaryKey="true"></constraints>
+            </column>
+            <column name="conversation_id" type="int">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="message" type="varchar(255)"></column>
+            <column name="sent_at" type="datetime" defaultValueComputed="NOW()::timestamp">
+                <constraints nullable="true"></constraints>
+            </column>
+            <column name="photo_url" type="varchar(100)" defaultValueComputed="null">
+                <constraints nullable="true"></constraints>
+            </column>
+            <column name="video_url" type="varchar(100)" defaultValueComputed="null">
+                <constraints nullable="true"></constraints>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="conversation_id"
+                                 constraintName="conversations_conversationId" referencedTableName="conversations"
+                                 referencedColumnNames="conversation_id" onDelete="CASCADE"></addForeignKeyConstraint>
+
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="user_id"
+                                 constraintName="messages_table_user_id" referencedTableName="users"
+                                 referencedColumnNames="user_id" onDelete="CASCADE"></addForeignKeyConstraint>
+        <rollback>
+            <dropTable tableName="messages"></dropTable>
+        </rollback>
+
+    </changeSet>
+
+</databaseChangeLog>
